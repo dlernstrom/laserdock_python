@@ -13,7 +13,7 @@
 3. SSH into device
 4. `sudo apt-get update`
 5. `sudo apt-get upgrade`
-6. `sudo apt-get install git`
+6. `sudo apt-get install git screen`
 7. Authorize your computer with GitHub
     1. create an ssh key on your machine by typing `ssh-keygen -t rsa`; accept the defaults by keep hitting enter.
     2. print out the ssh key by typing cat ~/.ssh/id_rsa.pub
@@ -25,3 +25,5 @@
 9. `cd laserdock_python`
 10. `sudo pip3 install -r requirements.txt`
 11. `sudo apt-get install libusb-dev`
+12. `screen -R`  Reattaches if possible, otherwise restarts
+13. `sudo python3 border_parser.py`
