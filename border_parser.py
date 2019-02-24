@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     dock = LaserDock()
     dock.intensity_minimum = 0
-    dock.intensity_differential = 10
+    dock.intensity_differential = 1000
     samples_for_burning = parser.make_samples()
     starting_sample = 0
     while True:

@@ -15,7 +15,7 @@
 5. `sudo apt-get upgrade`
 6. `sudo apt-get install git`
 7. Authorize your computer with GitHub
-    1. create an ssh key on your machine by typing ssh-keygen -t rsa; accept the defaults by keep hitting enter.
+    1. create an ssh key on your machine by typing `ssh-keygen -t rsa`; accept the defaults by keep hitting enter.
     2. print out the ssh key by typing cat ~/.ssh/id_rsa.pub
     3. copy key to your clipboard.
     4. copy/paste public key into your github settings here: https://github.com/settings/keys
@@ -23,5 +23,5 @@
 7. `git clone git@github.com:dlernstrom/laserdock_python.git -o upstream`
 8. `sudo apt-get install python3-pip`
 9. `cd laserdock_python`
-10. `pip3 install -r requirements.txt`
+10. `sudo pip3 install -r requirements.txt`
 11. `sudo apt-get install libusb-dev`
