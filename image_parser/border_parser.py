@@ -10,8 +10,6 @@ class BorderParser(BaseParser):
         self.image_width = self.image_height = 100
         self.image_pixels = self.generate_image_pixels()
         self.image_pixel_count = len(self.image_pixels)
-        # let's randomize them for this test
-        random.shuffle(self.image_pixels)
 
     def generate_image_pixels(self):
         image_pixels = []
