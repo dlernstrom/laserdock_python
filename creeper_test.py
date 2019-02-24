@@ -8,11 +8,11 @@ from laserdock.laser_dock import LaserDock
 logger = logging.getLogger(__name__)
 
 random.seed('my_test!')
-IMG = os.path.join('img', 'CreeperGrayscaleTest.png')
+img = os.path.join('img', 'CreeperGrayscaleTest.png')
 
 
 if __name__ == '__main__':
-    parser = ImageParser(img_to_burn=IMG)
+    parser = ImageParser(img_to_burn=img)
 
     dock = LaserDock()
     samples_for_burning = parser.make_samples()

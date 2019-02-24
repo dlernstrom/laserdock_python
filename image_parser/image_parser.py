@@ -8,7 +8,7 @@ from image_parser.constants import SUBSAMPLED_IMG_SIZE
 class ImageParser(BaseParser):
     def __init__(self, img_to_burn):
         im = Image.open(img_to_burn, 'r')
-        self.im = im.thumbnail(SUBSAMPLED_IMG_SIZE, Image.ANTIALIAS)
+        self.im = im.resize(SUBSAMPLED_IMG_SIZE, Image.ANTIALIAS)
         self.pixel_intensities = list(self.im.getdata())
         self.full_intensity_sum = 255 * 3
 
