@@ -5,7 +5,7 @@ import usb.core
 import usb.util
 from tqdm import tqdm
 
-from laserdock.laserdock import constants as const
+from laserdock import constants as const
 
 logger = logging.getLogger(__name__)
 
