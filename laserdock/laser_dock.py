@@ -233,5 +233,5 @@ class LaserDock:
     def burn_sample(self, sample):
         intensity = int(sample['intensity'] * self.intensity_differential + self.intensity_minimum)
         for repeat_entry in range(intensity):
-            self.packet_samples.append(generated_sample)
+            self.packet_samples.append(sample)
             self.potentially_send_samples()
