@@ -18,6 +18,7 @@ from image_parser.image_parser import ImageParser
 from laserdock.laser_dock import LaserDock
 
 logger = logging.getLogger(__name__)
+logger.warning('hello world')
 img = os.path.join('img', 'halloween2019.png')
 
 
