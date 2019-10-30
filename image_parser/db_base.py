@@ -33,7 +33,7 @@ class DBConnection:
         :return:
         """
         try:
-            cursor = conn.cursor()
+            cursor = self.conn.cursor()
             cursor.execute(self.create_table_sql)
             cursor.commit()
         except Error as exc_data:
