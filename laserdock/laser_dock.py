@@ -10,11 +10,12 @@ from laserdock import constants as const
 logger = logging.getLogger(__name__)
 
 
-class LaserDock(object):
+class LaserDock:
     intensity_differential = const.INTENSITY_DIFFERENTIAL
     intensity_minimum = const.MIN_INTENSITY
 
     def __init__(self):
+        self.packet_samples = []
         self.dev = self.connect()
         self.get_version_major_number()
         self.get_version_minor_number()
@@ -212,10 +213,10 @@ class LaserDock(object):
             raise Exception('Bad response')
         print('Response from set ringbuffer command: %s' % response)
 
-    def send_samples(self, samples):
+    def send_samples(self):
         # this one uses the bulk transfer
         msg = b''
-        for sample in samples:
+        for sample in self.packet_samples:
             msg += struct.pack('<B', sample['r'])
             msg += struct.pack('<B', sample['g'])
             msg += struct.pack('<B', sample['b'])
@@ -223,17 +224,14 @@ class LaserDock(object):
             msg += struct.pack('<H', sample['x'])
             msg += struct.pack('<H', sample['y'])
         self.write_bulk(msg)
+        self.packet_samples = []
 
-    def burn_samples(self, start, samples_to_burn):
-        packet_samples = []
-        parser_sample_count = len(samples_to_burn)
-        for sample_counter in tqdm(range(start, parser_sample_count), desc='sending samples'):
-            generated_sample = samples_to_burn[sample_counter]
-            intensity = int(generated_sample['intensity'] * self.intensity_differential + self.intensity_minimum)
-            for repeat_entry in range(intensity):
-                packet_samples.append(generated_sample)
-                if len(packet_samples) == const.SAMPLES_PER_PACKET:
-                    self.send_samples(packet_samples)
-                    packet_samples = []
-        if len(packet_samples):
-            self.send_samples(packet_samples)
+    def potentially_send_samples(self):
+        if len(self.packet_samples) == const.SAMPLES_PER_PACKET:
+            self.send_samples()
+
+    def burn_sample(self, sample):
+        intensity = int(sample['intensity'] * self.intensity_differential + self.intensity_minimum)
+        for repeat_entry in range(intensity):
+            self.packet_samples.append(generated_sample)
+            self.potentially_send_samples()

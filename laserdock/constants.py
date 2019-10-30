@@ -23,8 +23,8 @@ REPEATS = 100000  # Poplar, no skipping row/col, linear test 100x100
 # 100% * INTENSITY_DIFFERENTIAL + MIN_INTENSITY == 100,000
 # 0% * INTENSITY_DIFFERENTIAL + MIN_INTENSITY == 25,000
 # By running the numbers this way, little bits of grey will show up quite nicely
-INTENSITY_DIFFERENTIAL = 4000 # 75000  # difference between 0% and 100% in the grayscaling
-MIN_INTENSITY = 0 # 25000
+INTENSITY_DIFFERENTIAL = 75000  # difference between 0% and 100% in the grayscaling
+MIN_INTENSITY = 25000
 
 COMMAND_ENABLE_OUTPUT = b'\x80'
 COMMAND_GET_OUTPUT_STATE = b'\x81'
