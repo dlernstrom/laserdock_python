@@ -92,13 +92,13 @@ class ImageMagnitudes(DBConnection):
 
     def get_pixel_count(self):
         cursor = self.conn.cursor()
-        cursor.execute("SELECT * FROM image_magnitude")
-        return cursor.rowcount
+        cursor.execute("SELECT COUNT(*) FROM image_magnitude")
+        row = cursor.fetchone()
+        return row[0]
 
     def fetch_randomized_samples(self):
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM image_magnitude ORDER BY RANDOM()")
-        logger.warning('There are %s entries in the database table', cursor.rowcount)
         row = cursor.fetchone()
         while row is not None:
             yield row_to_dict(row)
