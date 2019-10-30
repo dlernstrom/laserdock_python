@@ -46,7 +46,11 @@ if __name__ == '__main__':
     dock.intensity_minimum = 0
     if border_only:  # border loop
         dock.intensity_differential = 0.25  # (seconds) very fast for border squirrly loop
-        samples_for_burning = parser.get_border_samples()
+        all_samples_for_burning = parser.get_border_samples()
+        samples_for_burning = []
+        for sample_id in range(len(all_samples_for_burning)):
+            if sample_id % 10 == 0:
+                samples_for_burning.append(all_samples_for_burning[sample_id])
         logger.warning('there are %s samples for burning', len(samples_for_burning))
         loop = True
     else:
