@@ -18,18 +18,24 @@ class ImageParser(BaseParser):
         self.image_pixels = self.generate_image_pixels()
         self.image_pixel_count = len(self.image_pixels)
         # let's randomize them for this test
-        random.shuffle(self.image_pixels)
+        # random.shuffle(self.image_pixels)
 
     def generate_image_pixels(self):
         image_pixels = []
         for xcounter in range(self.image_width):
             for ycounter in range(self.image_height):
                 position = xcounter + ycounter * self.image_width
-                image_pixels.append((xcounter, ycounter, self.get_intensity(position)))
+                intensity = self.get_intensity(position)
+                if intensity < 0.5:
+                    continue
+                image_pixels.append((xcounter, ycounter, intensity))
         return image_pixels
 
     def get_intensity(self, sample_counter):
         """This method returns the combined intensity of the rgb values and returns the scaling factor"""
         intensity_rgb = self.pixel_intensities[sample_counter]
-        intensity_magnitude = intensity_rgb[0] + intensity_rgb[1] + intensity_rgb[2]
+        try:
+            intensity_magnitude = intensity_rgb[0] + intensity_rgb[1] + intensity_rgb[2]
+        except TypeError:
+            intensity_magnitude = intensity_rgb * 3
         return 1.0 - 1.0 * intensity_magnitude / self.full_intensity_sum
