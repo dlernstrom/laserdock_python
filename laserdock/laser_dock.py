@@ -246,7 +246,7 @@ class LaserDock:
 
     def burn_sample(self, sample):
         intensity = int(sample['intensity'] * self.intensity_differential * const.FPS + self.intensity_minimum * const.FPS)
-        logger.warning('intensity is %s', intensity)
+        logger.warning('intensity is %s, sample is:%s', intensity, sample)
         for repeat_entry in range(intensity):
             self.packet_samples.append(sample)
             self.potentially_send_samples()
