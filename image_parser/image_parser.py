@@ -34,14 +34,16 @@ def image_pixel_to_projector_sample(xpos, ypos, intensity):
 
 
 class ImageParser:
-    def __init__(self, img_to_burn, border_only):
-        self.magnitudes = ImageMagnitudes('magnitudes.db')
-        self.magnitudes.populate(img_to_burn, border_only)
+    def __init__(self, img_to_burn, border_only, cache):
+        self.magnitudes = ImageMagnitudes('magnitudes.db', cache)
+        if not cache:
+            self.magnitudes.populate(img_to_burn, border_only)
         super(ImageParser, self).__init__()
 
     def sample_iterator(self):
         """Filtering to samples in image, this is a generator in this implementation"""
         pixel_count = self.magnitudes.get_pixel_count()
+        logger.warning('There are %s pixels to burn', pixel_count)
         sample_generator = self.magnitudes.fetch_randomized_samples()
         for sample_counter, sample_dict in zip(tqdm(range(pixel_count), desc='rendering'), sample_generator):
             yield image_pixel_to_projector_sample(sample_dict['xpos'], sample_dict['ypos'], sample_dict['intensity'])

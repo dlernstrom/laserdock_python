@@ -14,9 +14,10 @@ logger = logging.getLogger(__name__)
 class DBConnection:
     create_table_sql = ''
 
-    def __init__(self, name):
-        if os.path.exists(name):
-            os.remove(name)
+    def __init__(self, name, cache):
+        if cache is False:
+            if os.path.exists(name):
+                os.remove(name)
         self.conn = None
         try:
             self.conn = sqlite3.connect(name)
@@ -25,7 +26,8 @@ class DBConnection:
             raise
         else:
             logger.info('%s connected', name)
-        self.create_table()
+        if cache is False:
+            self.create_table()
 
     def create_table(self):
         """ create a table from the create_table_sql statement
@@ -96,6 +98,7 @@ class ImageMagnitudes(DBConnection):
     def fetch_randomized_samples(self):
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM image_magnitude ORDER BY RANDOM()")
+        logger.warning('There are %s entries in the database table', cursor.rowcount)
         row = cursor.fetchone()
         while row is not None:
             yield row_to_dict(row)
