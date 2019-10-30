@@ -36,7 +36,7 @@ if __name__ == '__main__':
         loop = False
     while True:
         for sample in samples_for_burning:
-            dock.burn_sample(samples_for_burning)
+            dock.burn_sample(sample)
         if loop:
             continue
         break
