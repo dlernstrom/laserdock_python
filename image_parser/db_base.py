@@ -64,7 +64,7 @@ class ImageMagnitudes(DBConnection):
     );
     """
 
-    def populate(self, img_to_burn):
+    def populate(self, img_to_burn, border_only):
         logger.info('Populating sqlite table')
         im = Image.open(img_to_burn, 'r')
         im = im.resize(SUBSAMPLED_IMG_SIZE, Image.ANTIALIAS)
