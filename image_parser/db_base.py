@@ -4,6 +4,7 @@ import sqlite3
 from sqlite3 import Error
 
 from PIL import Image
+from tqdm import tqdm
 
 from image_parser.constants import SUBSAMPLED_IMG_SIZE
 
