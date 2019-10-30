@@ -3,7 +3,7 @@ import random
 from image_parser.base_parser import BaseParser
 
 
-class BorderParser(BaseParser):
+class BorderParser:
     def __init__(self):
         super(BorderParser, self).__init__()
 

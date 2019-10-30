@@ -1,6 +1,5 @@
 import random
 
-from image_parser.base_parser import BaseParser
 from image_parser.constants import SUBSAMPLED_IMG_SIZE, RED_COLOR, GREEN_COLOR, BLUE_COLOR, FLIP_TOP_BOTTOM, \
     FLIP_LEFT_RIGHT
 from image_parser.db_base import ImageMagnitudes
