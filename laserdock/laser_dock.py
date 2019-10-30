@@ -16,7 +16,7 @@ def sleep_until(time_to_wake):
     while time.monotonic() < time_to_wake:
         time_to_wait = time_to_wake - time.monotonic()
         sleep_time = min(time_to_wait, 1)
-        logger.warning('sleeping for %s', sleep_time)
+        # logger.warning('sleeping for %s', sleep_time)
         time.sleep(min(time_to_wait, 1))  # sleep the minimum of the correct time and 1 second
 
 
@@ -246,7 +246,7 @@ class LaserDock:
 
     def burn_sample(self, sample):
         intensity = int(sample['intensity'] * self.intensity_differential * const.FPS + self.intensity_minimum * const.FPS)
-        logger.warning('intensity is %s, sample is:%s', intensity, sample)
+        # logger.warning('intensity is %s, sample is:%s', intensity, sample)
         for repeat_entry in range(intensity):
             self.packet_samples.append(sample)
             self.potentially_send_samples()
