@@ -45,11 +45,11 @@ if __name__ == '__main__':
     dock = LaserDock()
     dock.intensity_minimum = 0
     if border_only:  # border loop
-        dock.intensity_differential = 1000  # very fast for border squirrly loop
+        dock.intensity_differential = 0.25  # (seconds) very fast for border squirrly loop
         samples_for_burning = parser.get_border_samples()
         loop = True
     else:
-        dock.intensity_differential = 100000  # full plywood intensity
+        dock.intensity_differential = 3.0  # (seconds) full plywood intensity
         samples_for_burning = parser.sample_iterator()
         loop = False
     while True:

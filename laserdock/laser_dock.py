@@ -22,7 +22,7 @@ class LaserDock:
         self.get_max_dac_rate()
         self.get_min_dac_value()
         self.get_max_dac_value()
-        self.set_dac_rate(30000)
+        self.set_dac_rate(const.FPS)
         self.get_dac_rate()
         self.clear_ringbuffer()
         self.get_sample_element_count()
@@ -231,7 +231,7 @@ class LaserDock:
             self.send_samples()
 
     def burn_sample(self, sample):
-        intensity = int(sample['intensity'] * self.intensity_differential + self.intensity_minimum)
+        intensity = int(sample['intensity'] * self.intensity_differential * const.FPS + self.intensity_minimum * const.FPS)
         for repeat_entry in range(intensity):
             self.packet_samples.append(sample)
             self.potentially_send_samples()
