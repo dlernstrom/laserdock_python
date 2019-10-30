@@ -70,7 +70,7 @@ class ImageMagnitudes(DBConnection):
         im = im.resize(SUBSAMPLED_IMG_SIZE, Image.ANTIALIAS)
         intensities = list(im.getdata())
         img_width, img_height = SUBSAMPLED_IMG_SIZE
-        for xpos in tqdm(range(img_width)):
+        for xpos in tqdm(range(img_width), desc='generating data'):
             for ypos in range(img_height):
                 position = xpos + ypos * img_width
                 intensity_rgb = intensities[position]
