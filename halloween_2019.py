@@ -52,7 +52,7 @@ if __name__ == '__main__':
         loop = True
     else:
         dock.intensity_differential = 100000  # full plywood intensity
-        samples_for_burning = parser.sample_iterator
+        samples_for_burning = parser.sample_iterator()
         loop = False
     while True:
         for sample in samples_for_burning:
