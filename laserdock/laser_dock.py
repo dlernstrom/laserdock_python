@@ -1,6 +1,7 @@
 import logging
 import struct
 import time
+from usb.core import USBError
 
 import usb.core
 import usb.util
@@ -235,7 +236,14 @@ class LaserDock:
             msg += struct.pack('<B', 0)
             msg += struct.pack('<H', sample['x'])
             msg += struct.pack('<H', sample['y'])
-        self.write_bulk(msg)
+        try:
+            self.write_bulk(msg)
+        except USBError:
+            logger.warning('Lost Connectivity to USB device... attempting reconnect')
+            self.dev = None
+            while self.dev is None:
+                self.dev = self.connect()
+                time.sleep(5)
         self.last_packet_send_time = time.monotonic()
         self.packet_samples = []
 
