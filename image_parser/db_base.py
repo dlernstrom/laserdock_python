@@ -35,7 +35,7 @@ class DBConnection:
         try:
             cursor = self.conn.cursor()
             cursor.execute(self.create_table_sql)
-            cursor.commit()
+            self.conn.commit()
         except Error as exc_data:
             logger.exception('%s: %s', type(exc_data), exc_data)
             raise
@@ -113,7 +113,7 @@ class ImageMagnitudes(DBConnection):
         sql = """INSERT INTO image_magnitude (xpos, ypos, intensity) VALUES(?,?,?)"""
         cur = self.conn.cursor()
         cur.execute(sql, (xpos, ypos, magnitude))
-        cur.commit()
+        self.conn.commit()
 
     def generate_border_pixels(self):
         cursor = self.conn.cursor()
@@ -124,7 +124,7 @@ class ImageMagnitudes(DBConnection):
         topmost_id = row[0]
         topmost_col = row[1]
         cursor.execute("UPDATE image_magnitude SET top_border = 1 WHERE id = ?", (topmost_id,))
-        cursor.commit()
+        self.conn.commit()
         # top edge, going left
         leftmost_row = row
         for xpos in range(topmost_col, 0, -1):
@@ -134,7 +134,7 @@ class ImageMagnitudes(DBConnection):
                 continue
             leftmost_row = row
             cursor.execute("UPDATE image_magnitude SET top_border = 1 WHERE id = ?", (row[0],))
-            cursor.commit()
+            self.conn.commit()
         # top left corner, going down
         bottommost_row = row
         for ypos in range(leftmost_row[2], img_height):
@@ -144,7 +144,7 @@ class ImageMagnitudes(DBConnection):
                 continue
             bottommost_row = row
             cursor.execute("UPDATE image_magnitude SET left_border = 1 WHERE id = ?", (row[0],))
-            cursor.commit()
+            self.conn.commit()
         # across the bottom, starting from the left
         rightmost_row = row
         for xpos in range(bottommost_row[1], img_width):
@@ -154,7 +154,7 @@ class ImageMagnitudes(DBConnection):
                 continue
             rightmost_row = row
             cursor.execute("UPDATE image_magnitude SET bottom_border = 1 WHERE id = ?", (row[0],))
-            cursor.commit()
+            self.conn.commit()
         # up the right side
         topmost_row = row
         for ypos in range(rightmost_row[2], 0, -1):
@@ -164,4 +164,4 @@ class ImageMagnitudes(DBConnection):
                 continue
             topmost_row = row
             cursor.execute("UPDATE image_magnitude SET right_border = 1 WHERE id = ?", (row[0],))
-            cursor.commit()
+            self.conn.commit()
