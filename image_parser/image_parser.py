@@ -1,3 +1,4 @@
+import logging
 import random
 
 from image_parser.constants import SUBSAMPLED_IMG_SIZE, RED_COLOR, GREEN_COLOR, BLUE_COLOR, FLIP_TOP_BOTTOM, \
