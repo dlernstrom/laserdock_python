@@ -48,8 +48,11 @@ class DBConnection:
             self.conn.close()
 
 
-def row_to_dict(row):
-    return {'xpos': row[1], 'ypos': row[2], 'intensity': row[3]}
+def row_to_dict(row, forced_intensity=None):
+    intensity = row[3]
+    if forced_intensity is not None:
+        intensity = forced_intensity
+    return {'xpos': row[1], 'ypos': row[2], 'intensity': intensity}
 
 
 class ImageMagnitudes(DBConnection):
@@ -108,13 +111,13 @@ class ImageMagnitudes(DBConnection):
         samples = []
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM image_magnitude WHERE left_border = 1 ORDER BY ypos")
-        samples.extend([row_to_dict(row) for row in cursor.fetchall()])
+        samples.extend([row_to_dict(row, forced_intensity=1) for row in cursor.fetchall()])
         cursor.execute("SELECT * FROM image_magnitude WHERE bottom_border = 1 ORDER BY xpos")
-        samples.extend([row_to_dict(row) for row in cursor.fetchall()])
+        samples.extend([row_to_dict(row, forced_intensity=1) for row in cursor.fetchall()])
         cursor.execute("SELECT * FROM image_magnitude WHERE right_border = 1 ORDER BY ypos DESC")
-        samples.extend([row_to_dict(row) for row in cursor.fetchall()])
+        samples.extend([row_to_dict(row, forced_intensity=1) for row in cursor.fetchall()])
         cursor.execute("SELECT * FROM image_magnitude WHERE top_border = 1 ORDER BY xpos DESC")
-        samples.extend([row_to_dict(row) for row in cursor.fetchall()])
+        samples.extend([row_to_dict(row, forced_intensity=1) for row in cursor.fetchall()])
         return samples
 
     def insert_intensity(self, xpos, ypos, magnitude):
