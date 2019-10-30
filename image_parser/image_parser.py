@@ -1,6 +1,8 @@
 import logging
 import random
 
+from tqdm import tqdm
+
 from image_parser.constants import SUBSAMPLED_IMG_SIZE, RED_COLOR, GREEN_COLOR, BLUE_COLOR, FLIP_TOP_BOTTOM, \
     FLIP_LEFT_RIGHT
 from image_parser.db_base import ImageMagnitudes

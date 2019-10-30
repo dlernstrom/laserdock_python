@@ -64,11 +64,12 @@ class ImageMagnitudes(DBConnection):
     """
 
     def populate(self, img_to_burn):
+        logger.info('Populating sqlite table')
         im = Image.open(img_to_burn, 'r')
         im = im.resize(SUBSAMPLED_IMG_SIZE, Image.ANTIALIAS)
         intensities = list(im.getdata())
         img_width, img_height = SUBSAMPLED_IMG_SIZE
-        for xpos in range(img_width):
+        for xpos in tqdm(range(img_width)):
             for ypos in range(img_height):
                 position = xpos + ypos * img_width
                 intensity_rgb = intensities[position]
@@ -116,6 +117,7 @@ class ImageMagnitudes(DBConnection):
         self.conn.commit()
 
     def generate_border_pixels(self):
+        logger.info('Generating border pixels')
         cursor = self.conn.cursor()
         img_width, img_height = SUBSAMPLED_IMG_SIZE
         # first find topmost pixel
