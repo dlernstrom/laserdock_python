@@ -226,7 +226,7 @@ class LaserDock:
 
     def send_samples(self):
         # this one uses the bulk transfer
-        logger.warning('sending samples')
+        # logger.warning('sending samples')
         msg = b''
         for sample in self.packet_samples:
             msg += struct.pack('<B', sample['r'])
