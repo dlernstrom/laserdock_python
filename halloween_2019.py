@@ -3,9 +3,6 @@ import os
 import random
 from logging import config
 
-from image_parser.image_parser import ImageParser
-from laserdock.laser_dock import LaserDock
-
 BASE_LOGGING_CONFIG = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -16,6 +13,10 @@ BASE_LOGGING_CONFIG = {
     }
 }
 config.dictConfig(BASE_LOGGING_CONFIG)
+
+from image_parser.image_parser import ImageParser
+from laserdock.laser_dock import LaserDock
+
 logger = logging.getLogger(__name__)
 img = os.path.join('img', 'halloween2019.png')
 
