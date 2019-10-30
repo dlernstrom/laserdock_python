@@ -2,13 +2,14 @@ import logging
 import logging.config
 import os
 import random
+import sys
 
 from image_parser.image_parser import ImageParser
 from laserdock.laser_dock import LaserDock
 
 BASE_LOGGING_CONFIG = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'formatters': {
         'default': {'format': '%(asctime)s - %(levelname)s - %(message)s', 'datefmt': '%Y-%m-%d %H:%M:%S'}
     },
@@ -35,7 +36,14 @@ img = os.path.join('img', 'halloween2019.png')
 
 if __name__ == '__main__':
     parser = ImageParser(img_to_burn=img)
-    border_only = 1
+    if len(sys.argv) == 1:
+        sys.exit(0)
+    elif sys.argv[1] == 'border':
+        border_only = True
+    elif sys.argv[1] == 'full':
+        border_only = False
+    else:
+        sys.exit(0)
 
     dock = LaserDock()
     dock.intensity_minimum = 0
@@ -44,6 +52,7 @@ if __name__ == '__main__':
         samples_for_burning = parser.get_border_samples()
         loop = True
     else:
+        dock.intensity_differential = 100000  # full plywood intensity
         samples_for_burning = parser.sample_iterator
         loop = False
     while True:

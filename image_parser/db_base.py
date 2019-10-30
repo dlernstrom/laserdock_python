@@ -130,7 +130,7 @@ class ImageMagnitudes(DBConnection):
         cursor.execute("UPDATE image_magnitude SET top_border = 1 WHERE id = ?", (topmost_id,))
         # top edge, going left
         leftmost_row = row
-        for xpos in range(topmost_col, 0, -1):
+        for xpos in tqdm(range(topmost_col, 0, -1), 'border pixels, top edge'):
             cursor.execute("SELECT * FROM image_magnitude WHERE xpos = ? ORDER BY ypos", (xpos,))
             row = cursor.fetchone()
             if row is None:
@@ -139,7 +139,7 @@ class ImageMagnitudes(DBConnection):
             cursor.execute("UPDATE image_magnitude SET top_border = 1 WHERE id = ?", (row[0],))
         # top left corner, going down
         bottommost_row = row
-        for ypos in range(leftmost_row[2], img_height):
+        for ypos in tqdm(range(leftmost_row[2], img_height), 'border pixels, left edge'):
             cursor.execute("SELECT * FROM image_magnitude WHERE ypos = ? ORDER BY xpos", (ypos,))
             row = cursor.fetchone()
             if row is None:
@@ -148,7 +148,7 @@ class ImageMagnitudes(DBConnection):
             cursor.execute("UPDATE image_magnitude SET left_border = 1 WHERE id = ?", (row[0],))
         # across the bottom, starting from the left
         rightmost_row = row
-        for xpos in range(bottommost_row[1], img_width):
+        for xpos in tqdm(range(bottommost_row[1], img_width), 'border pixels, bottom edge'):
             cursor.execute("SELECT * FROM image_magnitude WHERE xpos = ? ORDER BY ypos DESC", (xpos,))
             row = cursor.fetchone()
             if row is None:
@@ -157,7 +157,7 @@ class ImageMagnitudes(DBConnection):
             cursor.execute("UPDATE image_magnitude SET bottom_border = 1 WHERE id = ?", (row[0],))
         # up the right side
         topmost_row = row
-        for ypos in range(rightmost_row[2], 0, -1):
+        for ypos in tqdm(range(rightmost_row[2], 0, -1), 'border pixels, right edge'):
             cursor.execute("SELECT * FROM image_magnitude WHERE ypos = ? ORDER BY xpos DESC", (ypos,))
             row = cursor.fetchone()
             if row is None:
