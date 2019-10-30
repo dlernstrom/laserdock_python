@@ -1,5 +1,6 @@
 import logging
 import struct
+import time
 
 import usb.core
 import usb.util
@@ -8,6 +9,13 @@ from tqdm import tqdm
 from laserdock import constants as const
 
 logger = logging.getLogger(__name__)
+
+
+def sleep_until(time_to_wake):
+    # wait here for time to be ready
+    while time.monotonic() < time_to_wake:
+        time_to_wait = time_to_wake - time.monotonic()
+        time.sleep(min(time_to_wait, 1))  # sleep the minimum of the correct time and 1 second
 
 
 class LaserDock:
@@ -30,6 +38,7 @@ class LaserDock:
         self.get_bulk_packet_sample_count()
         self.enable_output()
         self.get_output()
+        self.last_packet_send_time = time.monotonic()
 
     @staticmethod
     def connect():
@@ -224,10 +233,12 @@ class LaserDock:
             msg += struct.pack('<H', sample['x'])
             msg += struct.pack('<H', sample['y'])
         self.write_bulk(msg)
+        self.last_packet_send_time = time.monotonic()
         self.packet_samples = []
 
     def potentially_send_samples(self):
         if len(self.packet_samples) == const.SAMPLES_PER_PACKET:
+            sleep_until(self.last_packet_send_time + const.SAMPLES_PER_PACKET / const.FPS)
             self.send_samples()
 
     def burn_sample(self, sample):
