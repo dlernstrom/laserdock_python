@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class DBConnection:
-    table_sql = ''
+    create_table_sql = ''
 
     def __init__(self, name):
         if os.path.exists(name):
@@ -50,7 +50,7 @@ def row_to_dict(row):
 
 
 class ImageMagnitudes(DBConnection):
-    table_sql = """
+    create_table_sql = """
     CREATE TABLE image_magnitude (
         id integer PRIMARY KEY,
         xpos integer NOT NULL,
