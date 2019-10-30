@@ -47,6 +47,7 @@ if __name__ == '__main__':
     if border_only:  # border loop
         dock.intensity_differential = 0.25  # (seconds) very fast for border squirrly loop
         samples_for_burning = parser.get_border_samples()
+        logger.warning('there are %s samples for burning', len(samples_for_burning))
         loop = True
     else:
         dock.intensity_differential = 3.0  # (seconds) full plywood intensity
