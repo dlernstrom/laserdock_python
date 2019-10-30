@@ -35,16 +35,15 @@ img = os.path.join('img', 'halloween2019.png')
 
 
 if __name__ == '__main__':
-    parser = ImageParser(img_to_burn=img)
     if len(sys.argv) == 1:
         sys.exit(0)
-    elif sys.argv[1] == 'border':
+    elif sys.argv[1] == 'border':  # border loop
         border_only = True
     elif sys.argv[1] == 'full':
         border_only = False
     else:
         sys.exit(0)
-
+    parser = ImageParser(img_to_burn=img, border_only=border_only)
     dock = LaserDock()
     dock.intensity_minimum = 0
     if border_only:  # border loop

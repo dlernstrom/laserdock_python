@@ -34,9 +34,9 @@ def image_pixel_to_projector_sample(xpos, ypos, intensity):
 
 
 class ImageParser:
-    def __init__(self, img_to_burn):
+    def __init__(self, img_to_burn, border_only):
         self.magnitudes = ImageMagnitudes('magnitudes.db')
-        self.magnitudes.populate(img_to_burn)
+        self.magnitudes.populate(img_to_burn, border_only)
         super(ImageParser, self).__init__()
 
     def sample_iterator(self):

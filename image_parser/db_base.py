@@ -84,8 +84,9 @@ class ImageMagnitudes(DBConnection):
                 if magnitude > 0:
                     self.insert_intensity(xpos, ypos, magnitude)
         self.conn.commit()
-        self.generate_border_pixels()
-        self.conn.commit()
+        if border_only:
+            self.generate_border_pixels()
+            self.conn.commit()
 
     def get_pixel_count(self):
         cursor = self.conn.cursor()
