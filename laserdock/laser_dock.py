@@ -94,7 +94,11 @@ class LaserDock:
         self.dev[0][(0, 0)][0].write(msg)
 
     def write_bulk(self, msg):
-        self.dev[0][(1, 0)][0].write(msg)
+        try:
+            self.dev[0][(1, 0)][0].write(msg)
+        except Exception:
+            self.disconnect()
+            self.dev = self.connect()
 
     def read_ctrl(self):
         packet_size = self.dev[0][(0, 0)][1].wMaxPacketSize
