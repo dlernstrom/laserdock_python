@@ -93,12 +93,23 @@ class LaserDock:
     def write_ctrl(self, msg):
         self.dev[0][(0, 0)][0].write(msg)
 
+    def reconnect(self):
+        logger.warning('Lost Connectivity to USB device... attempting reconnect')
+        self.dev = None
+        while self.dev is None:
+            try:
+                self.dev = self.connect()
+            except Exception as exc_data:
+                logger.warning('Exception trying to reconnect: %s %s', type(exc_data), exc_data)
+            else:
+                continue  # or break
+            time.sleep(5)
+
     def write_bulk(self, msg):
         try:
             self.dev[0][(1, 0)][0].write(msg)
         except Exception:
-            self.disconnect()
-            self.dev = self.connect()
+            self.reconnect()
 
     def read_ctrl(self):
         packet_size = self.dev[0][(0, 0)][1].wMaxPacketSize
@@ -242,12 +253,8 @@ class LaserDock:
             msg += struct.pack('<H', sample['y'])
         try:
             self.write_bulk(msg)
-        except USBError:
-            logger.warning('Lost Connectivity to USB device... attempting reconnect')
-            self.dev = None
-            while self.dev is None:
-                self.dev = self.connect()
-                time.sleep(5)
+        except (USBError, ValueError):
+            self.reconnect()
         self.last_packet_send_time = time.monotonic()
         self.packet_samples = []
 
