@@ -49,6 +49,10 @@ class DBConnection:
 
 
 def row_to_dict(row, forced_intensity=None):
+    """forced_intensity is used when setting the border pixel intensity in the database.
+    Note that the speed is configured from the burner intensity_minimum and intensity_differential
+    when showing the border_only
+    """
     intensity = row[3]
     if forced_intensity is not None:
         intensity = forced_intensity
@@ -87,7 +91,7 @@ class ImageMagnitudes(DBConnection):
                     intensity_sum = 255.0
                 magnitude = 1.0 - 1.0 * intensity_magnitude / intensity_sum
                 if magnitude > 0:
-                    self.insert_intensity(xpos, ypos, magnitude)
+                    self.insert_intensity(xpos, ypos, magnitude)  # magnitude is a percentage between 0 and 1 (incl)
         self.conn.commit()
         if border_only:
             self.generate_border_pixels()

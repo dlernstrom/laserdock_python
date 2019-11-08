@@ -1,0 +1,64 @@
+import logging
+import logging.config
+import os
+import random
+import sys
+
+from image_parser.image_parser import ImageParser
+from laserdock.laser_dock import LaserDock
+
+BASE_LOGGING_CONFIG = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'default': {'format': '%(asctime)s - %(levelname)s - %(message)s', 'datefmt': '%Y-%m-%d %H:%M:%S'}
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+            'stream': 'ext://sys.stdout'
+        },
+    },
+    'loggers': {
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+        },
+    }
+}
+logging.config.dictConfig(BASE_LOGGING_CONFIG)
+logger = logging.getLogger()
+logger.warning('hello world')
+img = os.path.join('img', 'power_armor.jpg')
+
+
+if __name__ == '__main__':
+    cache = False
+    border_only = False
+    if 'border' in sys.argv:  # border loop
+        border_only = True
+    if 'cache' in sys.argv:
+        cache = True
+    parser = ImageParser(img_to_burn=img, border_only=border_only, cache=cache)
+    dock = LaserDock()
+    if border_only:  # border loop
+        dock.intensity_minimum = 0
+        dock.intensity_differential = 0.05  # (seconds) very fast for border squirrly loop
+        all_samples_for_burning = parser.get_border_samples()
+        samples_for_burning = []
+        for sample_id in range(len(all_samples_for_burning)):
+            if sample_id % 10 == 0:
+                samples_for_burning.append(all_samples_for_burning[sample_id])
+        logger.warning('there are %s samples for burning', len(samples_for_burning))
+        loop = True
+    else:
+        samples_for_burning = parser.sample_iterator()
+        loop = False
+    while True:
+        for sample in samples_for_burning:
+            dock.burn_sample(sample)
+        if loop:
+            continue
+        break
