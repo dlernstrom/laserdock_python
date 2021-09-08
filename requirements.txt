@@ -1,3 +1,3 @@
 pyusb==1.0.2
-Pillow==5.1.0                 # For burning an image
+Pillow==8.3.2                 # For burning an image
 tqdm==4.30.0
