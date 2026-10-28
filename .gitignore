@@ -1,4 +1,14 @@
-*.pyc
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.laserdock-cache/
+*.db
+*.db-journal
 Thumbs.db
 *.wpr
 ~
